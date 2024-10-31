@@ -1,0 +1,41 @@
+{
+  "workbench.colorTheme": "GitHub Dark",
+  "workbench.iconTheme": "material-icon-theme",
+  "files.autoSave": "off",
+  "nxConsole.showNodeVersionOnStartup": false,
+  "editor.minimap.enabled": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.formatDocument": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "material-icon-theme.activeIconPack": "nest",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "[prisma]": {
+    "editor.formatOnSave": true
+  },
+  "editor.tabSize": 2,
+  "scm.showChangesSummary": false,
+  "scm.showOutgoingChanges": "never",
+  "git.confirmSync": false,
+  "terminal.integrated.defaultProfile.windows": "Ubuntu (WSL)",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell"
+    },
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
+      "args": [],
+      "icon": "terminal-cmd"
+    },
+    "Git Bash": {
+      "source": "Git Bash"
+    }
+  },
+  "prisma.showPrismaDataPlatformNotification": false,
+  "editor.formatOnSave": true
+}
