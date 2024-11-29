@@ -30,12 +30,12 @@ import { StudentsRepository } from '@/domain/forum/application/repositories/stud
   exports: [
     PrismaService,
     QuestionsRepository,
-    PrismaStudentsRepository,
-    PrismaAnswerAttachmentsRepository,
-    PrismaAnswerCommentsRepository,
-    PrismaAnswersRepository,
-    PrismaQuestionAttachmentsRepository,
+    StudentsRepository,
     PrismaQuestionCommentsRepository,
+    PrismaQuestionAttachmentsRepository,
+    PrismaAnswersRepository,
+    PrismaAnswerCommentsRepository,
+    PrismaAnswerAttachmentsRepository,
   ],
 })
 export class DatabaseModule {}
