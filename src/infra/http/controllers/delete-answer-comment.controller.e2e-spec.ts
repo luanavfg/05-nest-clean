@@ -25,8 +25,8 @@ describe('Delete answer comment (E2E)', () => {
       providers: [
         StudentFactory,
         QuestionFactory,
-        AnswerCommentFactory,
         AnswerFactory,
+        AnswerCommentFactory,
       ],
     }).compile()
 
@@ -52,13 +52,13 @@ describe('Delete answer comment (E2E)', () => {
     })
 
     const answer = await answerFactory.makePrismaAnswer({
-      authorId: user.id,
       questionId: question.id,
+      authorId: user.id,
     })
 
     const answerComment = await answerCommentFactory.makePrismaAnswerComment({
-      authorId: user.id,
       answerId: answer.id,
+      authorId: user.id,
     })
 
     const answerCommentId = answerComment.id.toString()
