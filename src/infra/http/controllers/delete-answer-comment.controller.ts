@@ -5,9 +5,9 @@ import {
   HttpCode,
   Param,
 } from '@nestjs/common'
+import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { DeleteAnswerCommentUseCase } from '@/domain/forum/application/use-cases/delete-answer-comment'
-import { CurrentUser } from '@/infra/auth/current-user.decorator'
 
 @Controller('/answers/comments/:id')
 export class DeleteAnswerCommentController {
@@ -27,7 +27,6 @@ export class DeleteAnswerCommentController {
     })
 
     if (result.isLeft()) {
-      console.log(result.value)
       throw new BadRequestException()
     }
   }
