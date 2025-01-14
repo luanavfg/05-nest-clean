@@ -65,7 +65,7 @@ describe('Fetch question comments (E2E)', () => {
       }),
     ])
 
-    const answerId = question.id.toString()
+    const answerId = answer.id.toString()
 
     const response = await request(app.getHttpServer())
       .get(`/answers/${answerId}/comments`)
