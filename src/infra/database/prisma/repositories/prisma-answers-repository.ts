@@ -9,9 +9,8 @@ import { AnswerAttachmentsRepository } from '@/domain/forum/application/reposito
 @Injectable()
 export class PrismaAnswersRepository implements AnswersRepository {
   constructor(
-    private prisma: PrismaService
+    private prisma: PrismaService,
     private answerAttachmentsRepository: AnswerAttachmentsRepository,
-  
   ) {}
 
   async findById(id: string): Promise<Answer | null> {
@@ -61,12 +60,12 @@ export class PrismaAnswersRepository implements AnswersRepository {
   async save(answer: Answer): Promise<void> {
     const data = PrismaAnswerMapper.toPrisma(answer)
 
-    await PromiseAll([
+    await Promise.all([
       this.prisma.answer.update({
-      where: {
-        id: data.id,
-      },
-      data,
+        where: {
+          id: data.id,
+        },
+        data,
       }),
       this.answerAttachmentsRepository.createMany(
         answer.attachments.getNewItems(),
