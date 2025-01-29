@@ -52,7 +52,7 @@ describe('Answer Question (E2E)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         content: 'New answer',
-        attachments: [attachment1.id.toString(), attachment2.id.toString()]
+        attachments: [attachment1.id.toString(), attachment2.id.toString()],
       })
 
     expect(response.statusCode).toBe(201)
