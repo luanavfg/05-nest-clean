@@ -2,21 +2,27 @@ import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questio
 import { makeQuestion } from 'test/factories/make-question'
 import { FetchRecentQuestionsUseCase } from './fetch-recent-questions'
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 
-let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
-let fetchRecentQuestions: FetchRecentQuestionsUseCase
+let inMemoryQuestionsRepository: InMemoryQuestionsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
+let inMemoryStudentsRepository: InMemoryStudentsRepository
+let sut: FetchRecentQuestionsUseCase
 
 describe('Fetch Recent Questions', () => {
   beforeEach(() => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository()
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
     )
-    fetchRecentQuestions = new FetchRecentQuestionsUseCase(
-      inMemoryQuestionsRepository,
-    )
+    sut = new FetchRecentQuestionsUseCase(inMemoryQuestionsRepository)
   })
 
   it('should be able to fetch recent questions', async () => {
@@ -30,7 +36,7 @@ describe('Fetch Recent Questions', () => {
       makeQuestion({ createdAt: new Date(2022, 0, 23) }),
     )
 
-    const result = await fetchRecentQuestions.execute({
+    const result = await sut.execute({
       page: 1,
     })
 
@@ -46,7 +52,7 @@ describe('Fetch Recent Questions', () => {
       await inMemoryQuestionsRepository.create(makeQuestion())
     }
 
-    const result = await fetchRecentQuestions.execute({
+    const result = await sut.execute({
       page: 2,
     })
 

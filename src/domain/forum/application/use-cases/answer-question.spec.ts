@@ -46,7 +46,7 @@ describe('Answer Question', () => {
       content: 'Conteúdo da Resposta',
       authorId: '1',
       attachmentsIds: ['1', '2'],
-      questionId: '1'
+      questionId: '1',
     })
 
     expect(result.isRight()).toBe(true)

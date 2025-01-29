@@ -1,20 +1,22 @@
+import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
+import { DeleteQuestionCommentUseCase } from '@/domain/forum/application/use-cases/delete-question-comment'
+import { makeQuestionComment } from 'test/factories/make-question-comment'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
-import { makeQuestionComment } from 'test/factories/make-question-comment'
-import { InMemoryQuestionCommentsRepository } from 'test/repositories/in-memory-question-comments-repository'
-import { DeleteQuestionCommentUseCase } from './delete-question-comment'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository
-let deleteQuestionComment: DeleteQuestionCommentUseCase
+let inMemoryStudentsRepository: InMemoryStudentsRepository
+let sut: DeleteQuestionCommentUseCase
 
 describe('Delete Question Comment', () => {
   beforeEach(() => {
-    inMemoryQuestionCommentsRepository =
-      new InMemoryQuestionCommentsRepository()
-
-    deleteQuestionComment = new DeleteQuestionCommentUseCase(
-      inMemoryQuestionCommentsRepository,
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
+    inMemoryQuestionCommentsRepository = new InMemoryQuestionCommentsRepository(
+      inMemoryStudentsRepository,
     )
+
+    sut = new DeleteQuestionCommentUseCase(inMemoryQuestionCommentsRepository)
   })
 
   it('should be able to delete a question comment', async () => {
@@ -22,7 +24,7 @@ describe('Delete Question Comment', () => {
 
     await inMemoryQuestionCommentsRepository.create(questionComment)
 
-    await deleteQuestionComment.execute({
+    await sut.execute({
       questionCommentId: questionComment.id.toString(),
       authorId: questionComment.authorId.toString(),
     })
@@ -37,7 +39,7 @@ describe('Delete Question Comment', () => {
 
     await inMemoryQuestionCommentsRepository.create(questionComment)
 
-    const result = await deleteQuestionComment.execute({
+    const result = await sut.execute({
       questionCommentId: questionComment.id.toString(),
       authorId: 'author-2',
     })

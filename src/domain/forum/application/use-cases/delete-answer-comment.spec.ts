@@ -1,19 +1,22 @@
+import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments-repository'
+import { DeleteAnswerCommentUseCase } from '@/domain/forum/application/use-cases/delete-answer-comment'
+import { makeAnswerComment } from 'test/factories/make-answer-comment'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
-import { makeAnswerComment } from 'test/factories/make-answer-comment'
-import { InMemoryAnswerCommentsRepository } from 'test/repositories/in-memory-answer-comments-repository'
-import { DeleteAnswerCommentUseCase } from './delete-answer-comment'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository
-let deleteAnswerComment: DeleteAnswerCommentUseCase
+let inMemoryStudentsRepository: InMemoryStudentsRepository
+let sut: DeleteAnswerCommentUseCase
 
 describe('Delete Answer Comment', () => {
   beforeEach(() => {
-    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository()
-
-    deleteAnswerComment = new DeleteAnswerCommentUseCase(
-      inMemoryAnswerCommentsRepository,
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
+    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository(
+      inMemoryStudentsRepository,
     )
+
+    sut = new DeleteAnswerCommentUseCase(inMemoryAnswerCommentsRepository)
   })
 
   it('should be able to delete a answer comment', async () => {
@@ -21,7 +24,7 @@ describe('Delete Answer Comment', () => {
 
     await inMemoryAnswerCommentsRepository.create(answerComment)
 
-    await deleteAnswerComment.execute({
+    await sut.execute({
       answerCommentId: answerComment.id.toString(),
       authorId: answerComment.authorId.toString(),
     })
@@ -36,7 +39,7 @@ describe('Delete Answer Comment', () => {
 
     await inMemoryAnswerCommentsRepository.create(answerComment)
 
-    const result = await deleteAnswerComment.execute({
+    const result = await sut.execute({
       answerCommentId: answerComment.id.toString(),
       authorId: 'author-2',
     })
