@@ -7,17 +7,28 @@ import { InMemoryNotificationsRepository } from 'test/repositories/in-memory-not
 import { InMemoryQuestionAttachmentsRepository } from 'test/repositories/in-memory-question-attachments-repository'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
 import { waitFor } from 'test/utils/wait-for'
-import { MockInstance } from 'vitest'
-import { SendNotificationUseCase } from '../use-cases/send-notification'
+import { SpyInstance } from 'vitest'
+import {
+  SendNotificationUseCase,
+  SendNotificationUseCaseRequest,
+  SendNotificationUseCaseResponse,
+} from '../use-cases/send-notification'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
 
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
+let inMemoryStudentsRepository: InMemoryStudentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
 let sendNotificationUseCase: SendNotificationUseCase
 
-let sendNotificationExecuteSpy: MockInstance<SendNotificationUseCase['execute']>
+let sendNotificationExecuteSpy: SpyInstance<
+  [SendNotificationUseCaseRequest],
+  Promise<SendNotificationUseCaseResponse>
+>
 
 describe('On Answer Created', () => {
   beforeEach(() => {
@@ -28,8 +39,12 @@ describe('On Answer Created', () => {
     )
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository()
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
     )
     inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
     sendNotificationUseCase = new SendNotificationUseCase(
